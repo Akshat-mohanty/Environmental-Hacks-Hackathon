@@ -303,7 +303,7 @@ export default function App() {
               </p>
             </div>
             <button className="btn-terracotta" onClick={() => setAlertModalOpen(true)}>
-              <AlertTriangle size={14} /> Dispatch Emergency SNS Alert
+              <AlertTriangle size={14} /> Dispatch Emergency SMS Alert
             </button>
           </div>
         </div>
@@ -1213,7 +1213,7 @@ export default function App() {
           <div className="editorial-modal-box">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1.5rem' }}>
               <h2 className="font-serif" style={{ fontSize: '1.85rem', color: 'var(--wine-severe)' }}>
-                Dispatch Amazon SNS Civic Broadcast
+                Dispatch Amazon SMS Civic Broadcast
               </h2>
               <button
                 onClick={() => setAlertModalOpen(false)}
@@ -1259,7 +1259,7 @@ export default function App() {
 
               {broadcastSuccess && (
                 <div style={{ background: 'rgba(44, 87, 63, 0.08)', border: '1px solid var(--forest-safe)', color: 'var(--forest-safe)', padding: '0.75rem 1rem', marginBottom: '1.25rem', fontSize: '0.82rem' }}>
-                  ✓ Successfully published via Amazon SNS: <strong>{broadcastSuccess.alertId}</strong>
+                  ✓ Successfully published via Amazon SMS: <strong>{broadcastSuccess.alertId}</strong>
                 </div>
               )}
 
@@ -1268,7 +1268,7 @@ export default function App() {
                   Cancel
                 </button>
                 <button type="submit" className="btn-terracotta" disabled={broadcasting}>
-                  <Send size={14} /> {broadcasting ? 'Publishing via SNS...' : 'Confirm & Publish Broadcast'}
+                  <Send size={14} /> {broadcasting ? 'Publishing via SMS...' : 'Confirm & Publish Broadcast'}
                 </button>
               </div>
             </form>
