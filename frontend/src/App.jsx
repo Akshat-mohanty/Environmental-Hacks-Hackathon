@@ -1187,14 +1187,12 @@ export default function App() {
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.4rem',
               transition: 'color 0.2s ease'
             }}
             onMouseEnter={(e) => e.currentTarget.style.color = 'var(--terracotta)'}
             onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
           >
-            <span>Found a bug?</span>
-            <span style={{ fontSize: '0.75rem' }}>↗</span>
+            Found a bug?
           </a>
 
           <p style={{
