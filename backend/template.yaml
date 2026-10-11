@@ -1,0 +1,104 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  VayuRakshak - Serverless Air Defense, Stubble Fire & School Safety Platform
+  Built for AWS Environmental Hacks (Track 01: Air)
+
+Globals:
+  Function:
+    Timeout: 15
+    MemorySize: 256
+    Runtime: nodejs20.x
+    Environment:
+      Variables:
+        AIR_ALERT_TOPIC_ARN: !Ref AirAlertSnsTopic
+        STATIONS_TABLE: !Ref StationsTable
+        SCHOOLS_TABLE: !Ref SchoolsTable
+
+Resources:
+  # 1. API Gateway HTTP API
+  VayuRakshakHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - '*'
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+
+  # 2. Main Serverless Backend Function (AWS Lambda)
+  VayuRakshakApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/lambda.handler
+      Policies:
+        - SNSCrudPolicy:
+            TopicName: !GetAtt AirAlertSnsTopic.TopicName
+        - DynamoDBCrudPolicy:
+            TableName: !Ref StationsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SchoolsTable
+      Events:
+        CatchAll:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref VayuRakshakHttpApi
+            Path: /{proxy+}
+            Method: ANY
+
+  # 3. Scheduled Ingestion & Safety Monitor (EventBridge Rule)
+  AqiSafetyMonitorCron:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "Check AQI spikes and stubble fire drift every 15 minutes to trigger school safety notices"
+      ScheduleExpression: "rate(15 minutes)"
+      State: "ENABLED"
+      Targets:
+        - Arn: !GetAtt VayuRakshakApiFunction.Arn
+          Id: "VayuRakshak15MinCheck"
+
+  # 4. Amazon SNS Topic for Bad Day / School Emergency Notifications
+  AirAlertSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: VayuRakshakAirEmergencyAlerts
+      DisplayName: "VayuRakshak Air Defense & School Safety Broadcast"
+
+  # 5. Amazon DynamoDB Tables
+  StationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: VayuRakshakStations
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: stationId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: stationId
+          KeyType: HASH
+
+  SchoolsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: VayuRakshakSchools
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: schoolId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: schoolId
+          KeyType: HASH
+
+Outputs:
+  ApiEndpoint:
+    Description: "HTTP API Gateway endpoint URL"
+    Value: !Sub "https://${VayuRakshakHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+  SnsTopicArn:
+    Description: "Emergency Alerts SNS Topic ARN"
+    Value: !Ref AirAlertSnsTopic

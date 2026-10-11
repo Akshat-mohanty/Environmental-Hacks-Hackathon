@@ -1,0 +1,587 @@
+:root {
+  --bg-canvas: #FAF7F2;
+  --bg-card: #F3ECE2;
+  --bg-card-hover: #ECE4D7;
+  --bg-surface: #E9E1D2;
+  --bg-surface-elevated: #FFFDF9;
+  
+  --text-primary: #23170F;
+  --text-muted: #6E6157;
+  --text-subtle: #96897E;
+  
+  --border-color: #DCD3C5;
+  --border-subtle: #E8E1D5;
+  --border-dark: #332418;
+  
+  --brass: #816B0E;
+  --brass-light: #A3881C;
+  --brass-dark: #645307;
+  --terracotta: #7A3226;
+  --terracotta-dark: #63251B;
+  
+  --wine-severe: #601E2E;
+  --rust-verypoor: #8D3A1B;
+  --amber-poor: #97601B;
+  --forest-safe: #2C573F;
+  
+  --font-serif: "Cormorant Garamond", Garamond, Georgia, serif;
+  --font-sans: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Menlo", "SF Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(129, 107, 14, 0.04) 0%, transparent 60%),
+    linear-gradient(to right, rgba(220, 211, 197, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(220, 211, 197, 0.25) 1px, transparent 1px);
+  background-size: 100% 100%, 72px 72px, 72px 72px;
+}
+
+/* Typography Helpers */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.tracked-caps {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+}
+
+/* Layout Containers */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Header & Navigation */
+header.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250, 247, 242, 0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 5.25rem;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.brand-emblem {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--brass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFDF9;
+  position: relative;
+}
+
+.brand-emblem::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(129, 107, 14, 0.25);
+}
+
+/* Hero Section */
+.hero-editorial {
+  padding: 6rem 0 4.5rem;
+  position: relative;
+  border-bottom: 1px solid var(--border-color);
+  background: 
+    radial-gradient(circle at 80% 20%, rgba(122, 50, 38, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 10% 80%, rgba(129, 107, 14, 0.05) 0%, transparent 50%);
+}
+
+.hero-coords {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  color: var(--text-subtle);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero-coords span.dot {
+  width: 4px;
+  height: 4px;
+  background: var(--brass);
+  display: inline-block;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 5.5vw, 5rem);
+  line-height: 1.05;
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  max-width: 980px;
+  margin-bottom: 2rem;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--terracotta);
+}
+
+.hero-description {
+  font-size: 1.15rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-muted);
+  max-width: 740px;
+  margin-bottom: 2.5rem;
+}
+
+/* Navigation Tabs */
+.editorial-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 3.5rem;
+  overflow-x: auto;
+  gap: 0;
+  scrollbar-width: none;
+}
+
+.editorial-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.editorial-tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 1.25rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.editorial-tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.editorial-tab-btn.active {
+  color: var(--brass-dark);
+  border-bottom-color: var(--brass);
+  font-weight: 600;
+  background: rgba(243, 236, 226, 0.4);
+}
+
+/* Architectural Card */
+.arch-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.arch-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: transparent;
+  transition: background 0.25s ease;
+}
+
+.arch-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--brass);
+  box-shadow: 0 12px 32px rgba(35, 23, 15, 0.05);
+}
+
+.arch-card:hover::before {
+  background: var(--brass);
+}
+
+/* Atmospheric / Botanical Linework Art Placeholder (Replacing Stock Images) */
+.atmospheric-art {
+  width: 100%;
+  height: 190px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface-elevated);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.atmospheric-art svg {
+  opacity: 0.85;
+}
+
+/* Architectural Buttons */
+.btn-brass {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--brass);
+  color: #FFFDF9;
+  border: 1px solid var(--brass);
+  padding: 0.95rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-brass:hover {
+  background: var(--brass-dark);
+  border-color: var(--brass-dark);
+  box-shadow: 0 4px 14px rgba(129, 107, 14, 0.25);
+}
+
+.btn-terracotta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--terracotta);
+  color: #FFFDF9;
+  border: 1px solid var(--terracotta);
+  padding: 0.95rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.25s ease;
+}
+
+.btn-terracotta:hover {
+  background: var(--terracotta-dark);
+  border-color: var(--terracotta-dark);
+  box-shadow: 0 4px 14px rgba(122, 50, 38, 0.25);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.95rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.25s ease;
+}
+
+.btn-outline:hover {
+  border-color: var(--brass);
+  background: rgba(129, 107, 14, 0.05);
+}
+
+/* Category Badges (Lao Garden Editorial Palette) */
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.tag-severe {
+  background: rgba(96, 30, 46, 0.08);
+  border-color: var(--wine-severe);
+  color: var(--wine-severe);
+}
+
+.tag-verypoor {
+  background: rgba(141, 58, 27, 0.08);
+  border-color: var(--rust-verypoor);
+  color: var(--rust-verypoor);
+}
+
+.tag-poor {
+  background: rgba(151, 96, 27, 0.08);
+  border-color: var(--amber-poor);
+  color: var(--amber-poor);
+}
+
+.tag-safe {
+  background: rgba(44, 87, 63, 0.08);
+  border-color: var(--forest-safe);
+  color: var(--forest-safe);
+}
+
+.tag-brass {
+  background: rgba(129, 107, 14, 0.08);
+  border-color: var(--brass);
+  color: var(--brass-dark);
+}
+
+/* Editorial Metric Blocks */
+.metric-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.metric-card {
+  background: #FFFDF9;
+  border: 1px solid var(--border-color);
+  padding: 1.75rem;
+  position: relative;
+}
+
+.metric-number {
+  font-family: var(--font-serif);
+  font-size: 3.25rem;
+  line-height: 1;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 0.75rem 0 0.5rem;
+}
+
+.metric-number em {
+  font-style: italic;
+  font-family: var(--font-serif);
+}
+
+/* Fine Dividers & Vignettes */
+.ornamental-hr {
+  border: none;
+  height: 1px;
+  background: var(--border-color);
+  margin: 3.5rem 0;
+  position: relative;
+}
+
+.ornamental-hr::after {
+  content: "✦";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-canvas);
+  padding: 0 1rem;
+  color: var(--brass);
+  font-size: 0.75rem;
+}
+
+/* Modals */
+.editorial-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(35, 23, 15, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1.5rem;
+}
+
+.editorial-modal-box {
+  background: #FFFDF9;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 25px 60px rgba(35, 23, 15, 0.2);
+  max-width: 620px;
+  width: 100%;
+  padding: 2.75rem;
+  position: relative;
+}
+
+.editorial-modal-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--terracotta);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+  .hero-editorial {
+    padding: 3.5rem 0 2.5rem;
+  }
+  .header-inner {
+    height: 4.5rem;
+  }
+}
+
+/* Editorial Motion & Keyframe Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes plumeFlow {
+  from {
+    stroke-dashoffset: 32;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-fade-up {
+  animation: fadeSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-pulse-subtle {
+  display: inline-block;
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+.plume-trajectory-animated {
+  stroke-dasharray: 6 3;
+  animation: plumeFlow 2s linear infinite;
+}
+
+/* Micro-interactions & Tactile Hover States */
+.arch-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.arch-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(35, 23, 15, 0.08);
+}
+
+.metric-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.25s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--brass);
+  box-shadow: 0 12px 28px rgba(35, 23, 15, 0.06);
+}
+
+.btn-brass:active, .btn-terracotta:active, .btn-outline:active {
+  transform: translateY(1px);
+}
+
+.editorial-modal-backdrop {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.editorial-modal-box {
+  animation: modalScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
