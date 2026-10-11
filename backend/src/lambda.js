@@ -46,6 +46,16 @@ export const handler = async (event) => {
 
     if (path === '/api/stations' && method === 'GET') {
       const data = getBaselineData();
+      const search = (queryParams.search || queryParams.q || '').trim().toLowerCase();
+      let stations = data.stations;
+      if (search) {
+        stations = stations.filter(s =>
+          s.name.toLowerCase().includes(search) ||
+          (s.city && s.city.toLowerCase().includes(search)) ||
+          (s.category && s.category.toLowerCase().includes(search))
+        );
+      }
+
       const avgAqi = Math.round(
         data.stations.reduce((acc, s) => acc + s.aqi, 0) / data.stations.length
       );
@@ -53,7 +63,9 @@ export const handler = async (event) => {
         statusCode: 200,
         headers,
         body: JSON.stringify({
-          stations: data.stations,
+          stations,
+          totalStations: data.stations.length,
+          matchingCount: stations.length,
           averageAqi: avgAqi,
           highestRiskStation: data.stations.reduce((max, s) => s.aqi > max.aqi ? s : max, data.stations[0]),
           timestamp: new Date().toISOString()

@@ -23,15 +23,28 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 2. Monitoring stations & current air metrics
+// 2. Monitoring stations & current air metrics (supports ?search= or ?q=)
 app.get('/api/stations', (req, res) => {
   const data = getBaselineData();
+  const search = (req.query.search || req.query.q || '').trim().toLowerCase();
+  
+  let stations = data.stations;
+  if (search) {
+    stations = stations.filter(s =>
+      s.name.toLowerCase().includes(search) ||
+      (s.city && s.city.toLowerCase().includes(search)) ||
+      (s.category && s.category.toLowerCase().includes(search))
+    );
+  }
+
   const avgAqi = Math.round(
     data.stations.reduce((acc, s) => acc + s.aqi, 0) / data.stations.length
   );
 
   res.json({
-    stations: data.stations,
+    stations,
+    totalStations: data.stations.length,
+    matchingCount: stations.length,
     averageAqi: avgAqi,
     highestRiskStation: data.stations.reduce((max, s) => s.aqi > max.aqi ? s : max, data.stations[0]),
     timestamp: new Date().toISOString()
