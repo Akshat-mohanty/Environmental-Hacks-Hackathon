@@ -735,7 +735,30 @@ export default function App() {
 
       {/* Site Footer */}
       <footer style={{ borderTop: '1px solid var(--border-color)', padding: '2.5rem 0', background: 'rgba(250, 247, 242, 0.7)' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <a
+            href="https://github.com/Akshat-mohanty/Environmental-Hacks-Hackathon/issues/new"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: 'Jost, sans-serif',
+              fontSize: '0.74rem',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: 'var(--text-muted)',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--terracotta)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+          >
+            <span>Found a bug?</span>
+            <span style={{ fontSize: '0.75rem' }}>↗</span>
+          </a>
+
           <p style={{
             fontFamily: 'Jost, sans-serif',
             fontSize: '0.74rem',
